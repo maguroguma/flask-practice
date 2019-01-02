@@ -31,3 +31,10 @@ def add_entry():
   db.session.commit()
   flash('新しく記事が作成されました')
   return redirect(url_for('show_entries'))
+
+@app.route('/entries/<int:id>', methods=['GET'])
+def show_entry(id):
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+  entry = Entry.query.get(id) # 渡されたidの維持をデータベースから取得できる
+  return render_template('entries/show.html', entry=entry)
